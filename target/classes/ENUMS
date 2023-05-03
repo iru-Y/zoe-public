@@ -1,0 +1,175 @@
+package com.zoe.models.enums;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import java.io.Serializable;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
+public enum ProductEnum implements Serializable {
+
+    //Section for Bacabal(MA)
+
+    BACABAL_X_LAGO_DA_PEDRA("Bacabal x Lago da Pedra"),
+    BACABAL_X_SAO_MATEUS("Bacabal x Sao Mateus"),
+    BACABAL_X_SAO_LUIS_GONZAGA("Bacabal x Sao Luis Gonzaga"),
+    BACABAL_X_LAGO_VERDE("Bacabal x Lago Verde"),
+    BACABAL_X_CONCEICAO_DO_LAGO_ACU("Bacabal x Conceicao do Lago Acu"),
+    BACABAL_X_BOM_LUGAR("Bacabal x Bom Lugar"),
+
+    //Section for Bom Lugar(MA)
+
+    BOM_LUGAR_X_LAGO_DA_PEDRA("Bom Lugar x Lago da Pedra"),
+    BOM_LUGAR_X_SAO_MATEUS("Bom Lugar x Sao Mateus"),
+    BOM_LUGAR_X_SAO_LUIS_GONZAGA("Bom Lugar x Sao Luis Gonzaga"),
+    BOM_LUGAR_X_LAGO_VERDE("Bom Lugar x Lago Verde"),
+    BOM_LUGAR_X_CONCEICAO_DO_LAGO_ACU("Bom Lugar x Conceicao do Lago Acu"),
+    BOM_LUGAR_X_BACABAL("Bom Lugar x Bacabal"),
+
+    //Section for Conceicao do Lago-Açu(MA)
+
+    CONCEICAO_DO_LAGO_ACU_X_LAGO_DA_PEDRA("Conceicao do Lago Acu x Lago da Pedra"),
+    CONCEICAO_DO_LAGO_ACU_X_SAO_MATEUS("Conceicao do Lago Acu x Sao Mateus"),
+    CONCEICAO_DO_LAGO_ACU_X_SAO_LUIS_GONZAGA("Conceicao do Lago Acu x Sao Luis Gonzaga"),
+    CONCEICAO_DO_LAGO_ACU_X_LAGO_VERDE("Conceicao do Lago Acu x Lago Verde"),
+    CONCEICAO_DO_LAGO_ACU_X_BOM_LUGAR("Conceicao do Lago Acu x Bom Lugar"),
+    CONCEICAO_DO_LAGO_ACU_X_BACABAL("Conceicao do Lago Acu x Bacabal"),
+
+    //Section for Lago da Pedra(MA)
+
+    LAGO_DA_PEDRA_X_SAO_MATEUS("Lago da Pedra x Sao Mateus"),
+    LAGO_DA_PEDRA_X_SAO_LUIS_GONZAGA("Lago da Pedra x Sao Luis Gonzaga"),
+    LAGO_DA_PEDRA_X_LAGO_VERDE("Lago da Pedra x Lago Verde"),
+    LAGO_DA_PEDRA_X_CONCEICAO_DO_LAGO_ACU("Lago da Pedra x Conceicao do Lago Acu"),
+    LAGO_DA_PEDRA_X_BOM_LUGAR("Lago da Pedra x Bom Lugar"),
+    LAGO_DA_PEDRA_X_BACABAL("Lago da Pedra x Bacabal"),
+
+    //Section for Lago Verde(MA)
+
+    LAGO_VERDE_X_LAGO_DA_PEDRA("Lago Verde x Lago da Pedra"),
+    LAGO_VERDE_X_SAO_MATEUS("Lago Verde x São Mateus"),
+    LAGO_VERDE_X_SAO_LUIS_GONZAGA("Lago Verde x São Luís Gonzaga"),
+    LAGO_VERDE_X_CONCEICAO_DO_LAGO_ACU("Lago Verde x Conceição do Lago Açu"),
+    LAGO_VERDE_X_BOM_LUGAR("Lago Verde x Bom Lugar"),
+    LAGO_VERDE_X_BACABAL("Lago Verde x Bacabal"),
+
+    //Section for São Luís Gonzaga(MA)
+
+    SAO_LUIS_GONZAGA_X_LAGO_DA_PEDRA("São Luís Gonzaga x Lago da Pedra"),
+    SAO_LUIS_GONZAGA_X_SAO_MATEUS("São Luís Gonzaga x São Mateus"),
+    SAO_LUIS_GONZAGA_X_LAGO_VERDE("São Luís Gonzaga x Lago Verde"),
+    SAO_LUIS_GONZAGA_X_CONCEICAO_DO_LAGO_ACU("São Luís Gonzaga x Conceição do Lago Açu"),
+    SAO_LUIS_GONZAGA_X_BOM_LUGAR("São Luís Gonzaga x Bom Lugar"),
+    SAO_LUIS_GONZAGA_X_BACABAL("São Luís Gonzaga x Bacabal"),
+
+    SAO_MATEUS_X_LAGO_DA_PEDRA("São Mateus x Lago da Pedra"),
+    SAO_MATEUS_X_SAO_LUIS_GONZAGA("São Mateus x São Luís Gonzaga"),
+    SAO_MATEUS_X_LAGO_VERDE("São Mateus x Lago Verde"),
+    SAO_MATEUS_X_CONCEICAO_DO_LAGO_ACU("São Mateus x Conceição do Lago Açu"),
+    SAO_MATEUS_X_BOM_LUGAR("São Mateus x Bom Lugar"),
+    SAO_MATEUS_X_BACABAL("São Mateus x Bacabal");
+
+    private final String value;
+
+    @JsonCreator
+    public static ProductEnum fromValue(String value) {
+        for (ProductEnum productEnum : ProductEnum.values()) {
+            if (productEnum.value.equalsIgnoreCase(value)) {
+                return productEnum;
+            }
+        }
+        throw new IllegalArgumentException("Invalid value for ProductEnum: " + value);
+    }
+
+
+
+    ProductEnum(String value) {
+        this.value = value;
+    }
+
+    @JsonValue
+    public String getValue() {
+        return value;
+    }
+
+    public static String toJson() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(ProductEnum.values());
+    }
+
+}
+
+//////////////////////////////////////////////////////////////////////
+
+public Product(ProductEnum productEnum, LocalDateTime localDateTime) {
+        this.productEnum = productEnum;
+        this.price = generateProducts().stream()
+                .filter(product -> product.getProductEnum() == productEnum)
+                .mapToDouble(Product::getPrice)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Product not found: " + productEnum));
+        this.localDateTime = localDateTime;
+    }
+
+    public List<Product> generateProducts() {
+        List<Product> productList = new ArrayList<>();
+
+        for(ProductEnum product : ProductEnum.values()) {
+            Double price = switch (product) {
+                case    LAGO_VERDE_X_CONCEICAO_DO_LAGO_ACU -> 10.00;
+
+                case    LAGO_DA_PEDRA_X_BOM_LUGAR,
+                        LAGO_DA_PEDRA_X_BACABAL,
+                        SAO_LUIS_GONZAGA_X_BACABAL,
+                        LAGO_VERDE_X_BOM_LUGAR,
+                        LAGO_VERDE_X_BACABAL,
+                        BOM_LUGAR_X_LAGO_DA_PEDRA,
+                        BOM_LUGAR_X_SAO_LUIS_GONZAGA,
+                        BOM_LUGAR_X_BACABAL,
+                        BACABAL_X_LAGO_DA_PEDRA,
+                        BACABAL_X_SAO_LUIS_GONZAGA,
+                        BACABAL_X_SAO_MATEUS,
+                        BACABAL_X_BOM_LUGAR -> 15.00;
+
+                case    LAGO_DA_PEDRA_X_LAGO_VERDE,
+                        SAO_LUIS_GONZAGA_X_SAO_MATEUS,
+                        SAO_LUIS_GONZAGA_X_LAGO_DA_PEDRA,
+                        SAO_LUIS_GONZAGA_X_LAGO_VERDE,
+                        CONCEICAO_DO_LAGO_ACU_X_BACABAL,
+                        SAO_MATEUS_X_BOM_LUGAR,
+                        SAO_MATEUS_X_BACABAL,
+                        LAGO_VERDE_X_LAGO_DA_PEDRA,
+                        LAGO_VERDE_X_SAO_LUIS_GONZAGA,
+                        LAGO_VERDE_X_SAO_MATEUS,
+                        BOM_LUGAR_X_LAGO_VERDE,
+                        BOM_LUGAR_X_SAO_MATEUS,
+                        BACABAL_X_LAGO_VERDE,
+                        BACABAL_X_CONCEICAO_DO_LAGO_ACU -> 20.00;
+
+                case    SAO_LUIS_GONZAGA_X_BOM_LUGAR,
+                        CONCEICAO_DO_LAGO_ACU_X_BOM_LUGAR,
+                        BOM_LUGAR_X_CONCEICAO_DO_LAGO_ACU -> 25.00;
+
+                case    LAGO_DA_PEDRA_X_SAO_MATEUS,
+                        LAGO_DA_PEDRA_X_SAO_LUIS_GONZAGA,
+                        LAGO_DA_PEDRA_X_CONCEICAO_DO_LAGO_ACU,
+                        SAO_LUIS_GONZAGA_X_CONCEICAO_DO_LAGO_ACU,
+                        CONCEICAO_DO_LAGO_ACU_X_SAO_MATEUS,
+                        CONCEICAO_DO_LAGO_ACU_X_LAGO_DA_PEDRA,
+                        CONCEICAO_DO_LAGO_ACU_X_SAO_LUIS_GONZAGA,
+                        SAO_MATEUS_X_LAGO_DA_PEDRA,
+                        SAO_MATEUS_X_SAO_LUIS_GONZAGA,
+                        SAO_MATEUS_X_CONCEICAO_DO_LAGO_ACU -> 30.00;
+
+                default -> throw new IllegalArgumentException("Valor inválido");
+            };
+            productList.add(Product.builder()
+                    .productEnum(product)
+                    .price(price)
+                    .build());
+        }
+        return productList;
+    }

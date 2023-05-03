@@ -1,0 +1,97 @@
+    /contact
+{
+    "fullName": "",
+    "phone": "",
+    "doubt": ""
+}
+
+    /product
+{
+  "source": "Bacabal",
+  "destination": "Lago da Pedra"
+}
+
+
+    /senders
+{
+     "fullName": "",
+     "phone": "",
+     "city": "",
+     "landmark": "",
+     "cpf": "",
+     "mail": "",
+     "productDescription": "",
+     "order": [],
+     "recipients": "",
+     "address": "",
+     "addressLine2": ""
+}
+
+    /recipients
+{
+     "fullName": "",
+     "phone": "",
+     "city": "",
+     "landmark": "",
+     "orders": [],
+     "senders": "",
+     "address": "",
+     "addressLine2": ""
+}
+
+    /tracker
+{
+    "product": ,
+    "senders": ,
+    "recipients: ,
+}
+
+   /order
+{
+"id": "",
+"date": "",
+"product": {
+"id": "",
+"source": "Bacabal",
+"destination": "Lago da Pedra"
+},
+"senders": {
+"id": "",
+"fullName": "John Doe",
+"phone": "(11) 12345-6789",
+"city": "São Paulo",
+"district": "centro",
+"street": "Rua Rui Barbosa",
+"number": 444,
+"addressLine2": "Apto 456",
+"landmark": "Near the park",
+"cpf": "123.456.789-10",
+"mail": "yuri_matteus@hotmail.com",
+"productDescription": "Product XYZ"
+},
+"recipients": {
+"id": "",
+"fullName": "Jane Doe",
+"phone": "(11) 98765-4321",
+"city": "São Paulo",
+"district": "centro",
+"street": "Rua Rui Barbosa",
+"number": 44,
+"addressLine2": "Ali perto",
+"landmark": "perto da praça"
+},
+"orderStatus": "Preparando o pedido"
+}
+
+
+
+ Product product = order.getProduct();
+           orderService.sendEmail(
+                   senders.getMail(),
+                   "Obrigado por se cadastrar em nossa plataforma! Bem-vindo a Zoé\n",
+                   "Seu pedido foi recebido com sucesso! Seu código de rastreio é: " +
+                           order.getTracker() + "\n\n" +
+                           "Aqui está o valor total do seu pedido: R$" + String.format("%.2f", product.getPrice()) +
+                           "\n\n" +
+                           "Obrigado pela preferência!\n\n" +
+                           "Dúvidas entrar em contato em nosso site xxx.xxx.xx, ou pelo nosso whatsapp: (xx) xxxxxx-xxxx");
